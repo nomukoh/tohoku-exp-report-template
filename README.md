@@ -7,7 +7,7 @@
 - [Overleaf](https://www.overleaf.com/)
 - [CloudTex](https://cloudlatex.io)
 
-## LiveTexのローカルへのインストール
+## Tex Live のローカルへのインストール
 
 ### Linux
 
