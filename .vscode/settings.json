@@ -1,0 +1,34 @@
+{
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk",
+      "command": "latexmk",
+      "args": [
+        "-lualatex",
+        "-output-directory=build",
+        "-interaction=nonstopmode",
+        "-synctex=1",
+        "-file-line-error",
+        "-bibtex-",
+        "%DOC%"
+      ]
+    },
+    {
+      "name": "copy-pdf",
+      "command": "sh",
+      "args": [
+        "-c",
+        "fname=$(basename \"%DOC%\" .tex); mkdir -p pdf && cp -f build/\"$fname.pdf\" pdf/\"$fname.pdf\""
+      ]
+    }
+  ],
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "latexmk (lualatex with pdf copy)",
+      "tools": ["latexmk", "copy-pdf"]
+    }
+  ],
+  "latex-workshop.latex.recipe.default": "latexmk (lualatex with pdf copy)",
+  "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.latex.bibtex.enabled": false
+}
