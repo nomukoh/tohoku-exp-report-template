@@ -12,6 +12,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{caption}
+\usepackage{subcaption}
 \usepackage{siunitx}
 \usepackage{booktabs}
 \usepackage{pdfpages}
@@ -76,13 +77,19 @@
   {0em}{}
 \titlespacing*{\subparagraph}{0em}{0em}{0em}
 
-% ラベルの日本語化
+% 和文キャプション
 \renewcommand{\figurename}{図}
 \renewcommand{\tablename}{表}
 \renewcommand{\refname}{参考文献}
+
+% autoref の和文化
 \renewcommand*{\figureautorefname}{図}
 \renewcommand*{\tableautorefname}{表}
 \renewcommand*{\equationautorefname}{式}
+\renewcommand*{\subfigureautorefname}{図}
+
+\captionsetup[subfigure]{labelformat=simple}
+\renewcommand*{\thesubfigure}{(\alph{subfigure})}
 
 % ブラケット付き単位の設定
 \NewDocumentCommand{\sibr}{m}{\,\text{[\si{#1}]}} 
@@ -146,7 +153,7 @@
 
 \subsection{個別手順}
 
-\subsubsection*{[手順例]}
+\subsubsection*{[手順]}
 
 \begin{enumerate}
   \item 装置の初期設定
@@ -158,7 +165,6 @@
 
 結果をまとめたグラフなどを\autoref{fig:example-graph}のように挿入する．
 
-
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.4\textwidth]{img/BN/graph.png}
@@ -166,12 +172,12 @@
   \label{fig:example-graph}
 \end{figure}
 
-結果をまとめた表などは\autoref{tab:example}のように挿入する．
+結果をまとめた表などは\autoref{tab:example-table}のように挿入する．
 
 \begin{table}[htbp]
   \centering
   \caption{測定結果の例}
-  \label{tab:example}
+  \label{tab:example-table}
   \begin{tabular}{cccc}
     \toprule
     条件1 & 条件2 & 条件3 & 条件4 \\
@@ -180,6 +186,28 @@
     \bottomrule
   \end{tabular}
 \end{table}
+
+図を横並びにするには，\autoref{fig:example-double-graph}のように挿入する．
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{img/BN/graph.png}
+    \caption{グラフ1}
+    \label{fig:example-double-graph-1}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{img/BN/graph.png}
+    \caption{グラフ2}
+    \label{fig:example-double-graph-2}
+  \end{subfigure}
+
+  \caption{横並びのグラフ}
+  \label{fig:example-double-graph}
+\end{figure}
 
 測定結果の計算式は\autoref{eq:line}のように挿入する．
 
