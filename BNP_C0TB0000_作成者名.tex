@@ -8,20 +8,22 @@
 \date{\today}
 
 % パッケージ類
-\usepackage{graphicx}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage{siunitx}
-\usepackage{booktabs}
-\usepackage{pdfpages}
-\usepackage{enumitem}
-\usepackage{titlesec}
-\usepackage{luatexja-fontspec}
-\usepackage{ascmac}
-\usepackage{hyperref}
-\usepackage{xspace}
+\usepackage{graphicx}   % 画像を挿入するため
+\usepackage{amsmath}    % 数式を使うため
+\usepackage{amssymb}    % 数式を使うため
+\usepackage{caption}    % 図表のキャプション
+\usepackage{subcaption} % サブキャプション
+\usepackage{siunitx}    % 数式の設定
+\usepackage{booktabs}   % 表のスタイル
+\usepackage{multirow}   % 表のスタイル
+\usepackage{pdfpages}   % 表紙の挿入
+\usepackage{enumitem}   % 箇条書き
+\usepackage{titlesec}   % セクションのスタイル
+\usepackage{luatexja-fontspec} % フォント設定
+\usepackage{hyperref}   % 図表へのリンク
+\usepackage{xspace}     % スタイルの装飾
+\usepackage{makecell}   % 表のセルを結合するため
+\usepackage{ascmac}     % 図の枠を作成するため
 
 % フォント
 \setmainjfont{IPAexMincho} 
@@ -91,6 +93,9 @@
 \captionsetup[subfigure]{labelformat=simple}
 \renewcommand*{\thesubfigure}{(\alph{subfigure})}
 
+\captionsetup[subtable]{labelformat=simple}
+\renewcommand*{\thesubtable}{(\alph{subtable})}
+
 % ブラケット付き単位の設定
 \NewDocumentCommand{\sibr}{m}{\,\text{[\si{#1}]}} 
 
@@ -100,6 +105,42 @@
   linkcolor=black,
   citecolor=black,
   urlcolor=black
+}
+
+% 参考文献の設定
+\usepackage[backend=biber,style=numeric,sorting=none]{biblatex}
+\addbibresource{refs.bib}
+
+% 参考文献の書式設定
+\DeclareDelimFormat{multinamedelim}{，}
+\DeclareDelimFormat{finalnamedelim}{，}
+\DeclareDelimFormat{nameyeardelim}{，}
+\DeclareFieldFormat{title}{#1}
+\DeclareFieldFormat{journaltitle}{#1}
+\renewcommand*{\newunitpunct}{，}
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{prenote}}
+  {\mkbibsuperscript{[\printfield{labelnumber}]}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+% 書籍フォーマット
+\DeclareBibliographyDriver{book}{%
+  \printnames{author}：%
+  \printfield{title}，%
+  \printfield{pages}，%
+  \printlist{publisher} (\printfield{year})%
+  \finentry
+}
+
+% 雑誌論文フォーマット
+\DeclareBibliographyDriver{article}{%
+  \printnames{author}：“%
+  \printfield{title}，”\ %
+  \printfield{journaltitle}，%
+  \printfield{volume}，%
+  \printfield{pages}(\printfield{year})%
+  \finentry
 }
 
 % 段落設定
@@ -118,11 +159,9 @@
 \includepdf[pages=1]{cover/BN.pdf}
 
 \section{実験の目的}
-
 本実験の目的をここに記述する．
 
-\section{原理}
-
+\section{概要}
 実験の理論的背景を簡潔に記述する．樹形図は\autoref{fig:tree-diagram}のように作成する．ChatGPTを使用して作成すると良い．
 
 \begin{figure}[htbp]
@@ -148,13 +187,10 @@
 \end{itemize}
 
 \subsection{実験概要}
-
 ここに全体の手順や測定方法の概要を記述する．
 
 \subsection{個別手順}
-
-\subsubsection*{[手順]}
-
+\subsubsection*{[手順例]}
 \begin{enumerate}
   \item 装置の初期設定
   \item 測定値の取得
@@ -162,22 +198,10 @@
 \end{enumerate}
 
 \section{実験結果}
-
-結果をまとめたグラフなどを\autoref{fig:example-graph}のように挿入する．
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.4\textwidth]{img/BN/graph.png}
-  \caption{グラフ例}
-  \label{fig:example-graph}
-\end{figure}
-
-結果をまとめた表などは\autoref{tab:example-table}のように挿入する．
-
 \begin{table}[htbp]
   \centering
   \caption{測定結果の例}
-  \label{tab:example-table}
+  \label{tab:example}
   \begin{tabular}{cccc}
     \toprule
     条件1 & 条件2 & 条件3 & 条件4 \\
@@ -187,60 +211,25 @@
   \end{tabular}
 \end{table}
 
-図を横並びにするには，\autoref{fig:example-double-graph}のように挿入する．
-
-\begin{figure}[htbp]
-  \centering
-  \begin{subfigure}{0.48\linewidth}
-    \centering
-    \includegraphics[width=\linewidth]{img/BN/graph.png}
-    \caption{グラフ1}
-    \label{fig:example-double-graph-1}
-  \end{subfigure}
-  \hfill
-  \begin{subfigure}{0.48\linewidth}
-    \centering
-    \includegraphics[width=\linewidth]{img/BN/graph.png}
-    \caption{グラフ2}
-    \label{fig:example-double-graph-2}
-  \end{subfigure}
-
-  \caption{横並びのグラフ}
-  \label{fig:example-double-graph}
-\end{figure}
-
-測定結果の計算式は\autoref{eq:line}のように挿入する．
-
 \begin{equation}
   y = a x + b \sibr{\meter\per\second}
   \label{eq:line}
 \end{equation}
+\autoref{eq:line}は測定結果の線形関係を表す．
 
 \section{考察}
-
 実験結果に基づいて考察を記述する．たとえば，傾向の説明，理論との一致・不一致，実験誤差の要因などを検討する．
 
+このように参考文献の明示もできる\cite{nist811-si-guide}．
+
 \section{結論}
-
 実験全体の要点を簡潔にまとめる．たとえば，
-
 \begin{itemize}
   \item 結果から得られる一般的な知見
   \item 今後の課題や応用可能性
 \end{itemize}
 
 \section*{＜参考文献＞}
-
-\begin{enumerate}[label={[\arabic*]}]
-  \item 教科書を参考文献とする場合の書式：\\
-  著者：書物名，頁（単ページの場合 p. OO，複数ページの場合 pp. OO--OO），出版社（年）．
-
-  \item 論文誌を参考文献とする場合の書式：\\
-  著者：“論文題目，” 雑誌名，巻（vol. OO または OO巻），論文頁（年）．
-
-  \item 二村忠元：電気磁気学，電子・通信・電気工学基礎講座１，p. 56, 丸善（1972）．
-
-  \item K. F. Schrum, S. H. Ko, and D. Ben-Amotz: “Description and theory of a fiber-optic confocal and super-focal Raman microspectrometer,” Appl. Spectrosc., vol. 50, pp. 1150–1155 (1996).
-\end{enumerate}
+\printbibliography[heading=none]
 
 \end{document}

@@ -9,7 +9,6 @@
         "-interaction=nonstopmode",
         "-synctex=1",
         "-file-line-error",
-        "-bibtex-",
         "%DOC%"
       ]
     },
@@ -30,5 +29,6 @@
   ],
   "latex-workshop.latex.recipe.default": "latexmk (lualatex with pdf copy)",
   "latex-workshop.latex.autoBuild.run": "onSave",
-  "latex-workshop.latex.bibtex.enabled": false
+  "latex-workshop.latex.bibtex.enabled": false,
+  "codic.case": "hy-phen-a-tion"
 }
