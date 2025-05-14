@@ -24,6 +24,7 @@
 \usepackage{xspace}     % スタイルの装飾
 \usepackage{makecell}   % 表のセルを結合するため
 \usepackage{ascmac}     % 図の枠を作成するため
+\usepackage{listings}   % ソースコードの表示
 
 % フォント
 \setmainjfont{IPAexMincho} 
@@ -83,6 +84,7 @@
 \renewcommand{\figurename}{図}
 \renewcommand{\tablename}{表}
 \renewcommand{\refname}{参考文献}
+\renewcommand{\lstlistingname}{ソースコード}
 
 % autoref の和文化
 \renewcommand*{\figureautorefname}{図}
@@ -97,7 +99,27 @@
 \renewcommand*{\thesubtable}{(\alph{subtable})}
 
 % ブラケット付き単位の設定
-\NewDocumentCommand{\sibr}{m}{\,\text{[\si{#1}]}} 
+\NewDocumentCommand{\sibr}{m}{\,\text{[\si{#1}]}}
+
+% ソースコード用の設定
+\lstset{
+  basicstyle={\ttfamily},
+  identifierstyle={\small},
+  commentstyle={\small\itshape},
+  keywordstyle={\small\bfseries},
+  ndkeywordstyle={\small},
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},
+  numbers=left,
+  xrightmargin=0em,
+  xleftmargin=3em,
+  numbersep=1em,
+  numberstyle={\scriptsize},
+  stepnumber=1,
+  lineskip=-0.5ex
+}
 
 % リンクの色設定
 \hypersetup{
@@ -153,7 +175,6 @@
 \makeatother
 
 \begin{document}
-\pagestyle{empty}
 
 % 表紙（wordから出力した表紙をcover/BN.pdfに保存）
 \includepdf[pages=1]{cover/BN.pdf}
@@ -161,7 +182,7 @@
 \section{実験の目的}
 本実験の目的をここに記述する．
 
-\section{概要}
+\section{原理}
 実験の理論的背景を簡潔に記述する．樹形図は\autoref{fig:tree-diagram}のように作成する．ChatGPTを使用して作成すると良い．
 
 \begin{figure}[htbp]
@@ -217,6 +238,17 @@
 \end{equation}
 \autoref{eq:line}は測定結果の線形関係を表す．
 
+作成したプログラムも\autoref{lst:python-example}のように表示可能．
+
+\begin{lstlisting}[language=Python, caption=Pythonの例, label=lst:python-example]
+  print("Hello, World!")
+
+  def add(a, b):
+      return a + b
+  result = add(1, 2)
+  print("Result:", result)
+\end{lstlisting}
+
 \section{考察}
 実験結果に基づいて考察を記述する．たとえば，傾向の説明，理論との一致・不一致，実験誤差の要因などを検討する．
 
@@ -229,7 +261,6 @@
   \item 今後の課題や応用可能性
 \end{itemize}
 
-\section*{＜参考文献＞}
-\printbibliography[heading=none]
+\printbibliography[title=＜参考文献＞]
 
 \end{document}
