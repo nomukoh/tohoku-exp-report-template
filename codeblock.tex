@@ -1,0 +1,106 @@
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\tcbuselibrary{listings, skins, breakable}
+
+% --- 1. カラー定義 (ライトモード用：コントラスト重視) ---
+\definecolor{codebg}{HTML}{F5F5F5}       % 背景色：明るいグレー
+\definecolor{codecomment}{HTML}{008000}  % コメント：濃い緑
+\definecolor{codekeyword}{HTML}{0000FF}  % 予約語：青
+\definecolor{codestring}{HTML}{A31515}   % 文字列：濃い赤
+\definecolor{codeident}{HTML}{000000}    % 識別子：黒
+\definecolor{codedelimiter}{HTML}{000000} % 括弧：黒
+\definecolor{codeop}{HTML}{000000}        % 演算子：黒
+\definecolor{codenumber}{HTML}{098658}   % 数字：緑がかった青
+
+% --- 2. 独自言語定義 ---
+\lstdefinelanguage{mycode}{
+    language=Python,
+    % 修正箇所：color{white} を color{black} に変更
+    basicstyle={\small\ttfamily\color{black}},
+    commentstyle={\color{codecomment}\itshape},
+    keywordstyle={\color{codekeyword}\bfseries},
+    stringstyle={\color{codestring}},
+    identifierstyle={\color{codeident}},
+    % literate での色指定
+    literate={=}{{\textcolor{codeop}{=}}}1
+             {+}{{\textcolor{codeop}{+}}}1
+             {-}{{\textcolor{codeop}{-}}}1
+             {*}{{\textcolor{codeop}{*}}}1
+             {/}{{\textcolor{codeop}{/}}}1
+             {(}{{\textcolor{codedelimiter}{(}}}1
+             {)}{{\textcolor{codedelimiter}{)}}}1
+             {[}{{\textcolor{codedelimiter}{[}}}1
+             {]}{{\textcolor{codedelimiter}{]}}}1
+             {\{}{{\textcolor{codedelimiter}{\{}}}1
+             {\}}{{\textcolor{codedelimiter}{\}}}}1
+             {0}{{\textcolor{codenumber}{0}}}1
+             {1}{{\textcolor{codenumber}{1}}}1
+             {2}{{\textcolor{codenumber}{2}}}1
+             {3}{{\textcolor{codenumber}{3}}}1
+             {4}{{\textcolor{codenumber}{4}}}1
+             {5}{{\textcolor{codenumber}{5}}}1
+             {6}{{\textcolor{codenumber}{6}}}1
+             {7}{{\textcolor{codenumber}{7}}}1
+             {8}{{\textcolor{codenumber}{8}}}1
+             {9}{{\textcolor{codenumber}{9}}}1,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=10pt,
+    breaklines=true,
+    showstringspaces=false,
+    tabsize=4,
+}
+
+% --- 3. 表示用環境の定義 ---
+\newtcblisting{codeblock}[2][]{
+    listing engine=listings,
+    listing only,
+    colback=codebg,
+    colframe=gray!30,     % 枠を背景より少しだけ濃くして境界を明快に
+    sharp corners,
+    breakable,
+    enhanced,
+    boxrule=0.5pt,        % 白背景時は少し枠線があった方が締まります
+    boxsep=0pt,
+    top=5pt, bottom=5pt,
+    left=25pt,
+    right=5pt,
+    width=\linewidth,
+    title={#2},
+    fonttitle=\small\sffamily\bfseries,
+    colbacktitle=gray!20!black, % タイトル部分は暗い色のまま（目立たせる）
+    attach boxed title to top left={yshift=-2mm, xshift=2mm},
+    boxed title style={sharp corners, boxrule=0pt},
+    listing options={
+        language=mycode,
+        frame=none,
+        xleftmargin=0pt,
+        lineskip=0.6pt,
+        #1
+    }
+}
+
+\newtcblisting{codeblock*}[1][]{
+    listing engine=listings,
+    listing only,
+    colback=codebg,
+    colframe=gray!30,
+    sharp corners,
+    breakable,
+    enhanced,
+    boxrule=0.5pt,
+    boxsep=0pt,
+    top=5pt, bottom=5pt,
+    left=25pt,
+    right=5pt,
+    width=\linewidth,
+    listing options={
+        language=mycode,
+        frame=none,
+        xleftmargin=0pt,
+        lineskip=0.6pt,
+        #1
+    }
+}
