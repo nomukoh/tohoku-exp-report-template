@@ -137,47 +137,104 @@
 }
 
 % 参考文献の設定
-\usepackage[backend=biber,style=numeric,sorting=none]{biblatex}
+\usepackage[backend=biber, style=numeric, sorting=none]{biblatex}
 \addbibresource{refs.bib}
 
-% アクセス日の表示を和文スタイルに
-\DeclareFieldFormat{urldate}{，参照日：#1}
+% --- 基本的な区切り文字と書式の設定 ---
+\renewcommand*{\newunitpunct}{，}       % 各項目の区切りを「，」に
+\renewcommand*{\finentrypunct}{．}      % 末尾を「．」に
+\DeclareDelimFormat{multinamedelim}{，} % 著者名間の区切り
+\DeclareDelimFormat{finalnamedelim}{，} % 最後の著者名の区切り
 
-% 参考文献の書式設定
-\DeclareDelimFormat{multinamedelim}{，}
-\DeclareDelimFormat{finalnamedelim}{，}
-\DeclareDelimFormat{nameyeardelim}{，}
-\DeclareFieldFormat{title}{#1}
+% --- フィールドごとの書式設定 ---
+
+% タイトル：論文・章・Webは二重引用符、書籍・雑誌はそのまま
+\DeclareFieldFormat{title}{#1} 
+\DeclareFieldFormat[article,inbook,incollection,online]{title}{“#1，”} 
 \DeclareFieldFormat{journaltitle}{#1}
-\renewcommand*{\newunitpunct}{，}
+\DeclareFieldFormat{booktitle}{#1}
+
+% ページ番号：pp. を付ける
+\DeclareFieldFormat{pages}{pp.#1}
+
+% URLと参照日
+\DeclareFieldFormat{url}{#1}
+\DeclareFieldFormat{urldate}{，\thefield{urlyear}/\thefield{urlmonth}/\thefield{urlday}}
+
+% --- 引用箇所の表示（[1]の上付き） ---
+% ガイドには「[1]」とありますが、本文中で上付きにしたい場合はこのまま残してください。
+% 普通の [1] にしたい場合は、以下の\DeclareCiteCommandブロックを削除してください。
 \DeclareCiteCommand{\cite}
   {\usebibmacro{prenote}}
   {\mkbibsuperscript{[\printfield{labelnumber}]}}
   {\multicitedelim}
   {\usebibmacro{postnote}}
 
-% 書籍フォーマット
-\DeclareBibliographyDriver{book}{%
-  \printnames{author}：%
-  \printfield{title}，%
-  \printfield{pages}，%
-  \printlist{publisher} (\printfield{year})%
-  \finentry
-}
+% --- ドライバ（表示順序）の設定 ---
 
-% 雑誌論文フォーマット
+% [1] 論文誌 (article)
+% 著者名，“標題，” 雑誌名，巻，号，pp.始め－終り，月年．
 \DeclareBibliographyDriver{article}{%
-  \printnames{author}：“%
-  \printfield{title}，”\ %
-  \printfield{journaltitle}，%
-  \printfield{volume}，%
-  \printfield{pages}(\printfield{year})%
+  \printnames{author}%
+  \newunit\newblock
+  \printfield{title}% 引用符とカンマはFieldFormatで処理
+  \printfield{journaltitle}%
+  \newunit\newblock
+  \printfield{volume}%
+  \newunit\newblock
+  \printfield{number}%
+  \newunit\newblock
+  \printfield{pages}%
+  \newunit\newblock
+  % 日付（月・年）の処理
+  \printdate
   \finentry
 }
 
-% 参照日
-\DeclareFieldFormat{urldate}{%
-  ，参照日：\thefield{urlyear}/\thefield{urlmonth}/\thefield{urlday}\isdot
+% [2] 著書・編書 (book)
+% 著者名，書名，編者名，発行所，発行年．
+% \DeclareBibliographyDriver{book}{%
+%   \printnames{author}%
+%   \newunit\newblock
+%   \printfield{title}%
+%   \newunit\newblock
+%   \printnames{editor}%
+%   \newunit\newblock
+%   \printlist{publisher}%
+%   \newunit\newblock
+%   \printfield{year}%
+%   \finentry
+% }
+
+% [3] 著書の一部 (book)
+% 著者名，“標題，” 書名，編者名，章番号またはpp.，発行所，発行年．
+\DeclareBibliographyDriver{book}{%
+  \printnames{author}%
+  \newunit\newblock
+  \printfield{title}%
+  \printfield{booktitle}%
+  \newunit\newblock
+  \printnames{editor}%
+  \newunit\newblock
+  \iffieldundef{chapter}
+    {\printfield{pages}}
+    {\printfield{chapter}}%
+  \newunit\newblock
+  \printlist{publisher}%
+  \newunit\newblock
+  \printfield{year}%
+  \finentry
+}
+
+% [4] Webページ (online)
+% “Web ページのタイトル”，URL アドレス，アクセスした日付．
+\DeclareBibliographyDriver{online}{%
+  \printfield{title}%
+  \newunit\newblock
+  \printfield{url}%
+  % \newunitを入れるとカンマが入るが、urldateのフォーマット内にカンマを含めているためここは不要
+  \printurldate
+  \finentry
 }
 
 % 段落設定
