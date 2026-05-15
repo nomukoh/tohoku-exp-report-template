@@ -127,6 +127,10 @@
 \usepackage[backend=biber, style=numeric, sorting=none]{biblatex}
 \addbibresource{refs.bib}
 
+% URLの改行ペナルティを下げて、途中での折り返しを許可する
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+
 % --- 基本的な区切り文字と書式の設定 ---
 \renewcommand*{\newunitpunct}{，}       % 各項目の区切りを「，」に
 \renewcommand*{\finentrypunct}{．}      % 末尾を「．」に
@@ -214,12 +218,13 @@
 }
 
 % [4] Webページ (online)
-% “Web ページのタイトル”，URL アドレス，アクセスした日付．
+% 著者, “Web ページのタイトル”，URL アドレス，アクセスした日付．
 \DeclareBibliographyDriver{online}{%
-  \printfield{title}%
+  \printnames{author}% 著者名を出力
   \newunit\newblock
+  \printfield{title}% 引用符とカンマはFieldFormat側で処理される
+  \setunit{\addspace}
   \printfield{url}%
-  % \newunitを入れるとカンマが入るが，urldateのフォーマット内にカンマを含めているためここは不要
   \printurldate
   \finentry
 }
